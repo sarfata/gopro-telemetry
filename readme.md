@@ -1,3 +1,7 @@
+# Browser-compatible branch
+
+This fork removes the dependency on egm96 which is not browser friendly.
+
 # GoPro Telemetry
 
 Parses telemetry from the GPMF track in GoPro cameras (Hero5 and later).
@@ -26,14 +30,14 @@ $ npm i gopro-telemetry
 Use as promise:
 
 ```js
-const goproTelemetry = require('gopro-telemetry');
+const goproTelemetry = require("gopro-telemetry");
 const telemetry = await goproTelemetry(input, options); //Get your input with gpmf-extract
 ```
 
 Use with callback:
 
 ```js
-const goproTelemetry = require('gopro-telemetry');
+const goproTelemetry = require("gopro-telemetry");
 function callback(data) {
   // Do sometging with the data
 }
@@ -77,27 +81,27 @@ Example:
 ```js
 const telemetry = await goproTelemetry(
   { rawData, timing },
-  { stream: ['ACCL'], repeatSticky: true }
+  { stream: ["ACCL"], repeatSticky: true }
 );
 ```
 
 This slightly more comprehensive example includes the data extraction step with [gpmf-extract](https://github.com/JuanIrache/gpmf-extract).
 
 ```js
-const gpmfExtract = require('gpmf-extract');
+const gpmfExtract = require("gpmf-extract");
 const goproTelemetry = require(`gopro-telemetry`);
-const fs = require('fs');
+const fs = require("fs");
 
-const file = fs.readFileSync('path_to_your_file.mp4');
+const file = fs.readFileSync("path_to_your_file.mp4");
 
 gpmfExtract(file)
-  .then(extracted => {
-    goproTelemetry(extracted, {}, telemetry => {
-      fs.writeFileSync('output_path.json', JSON.stringify(telemetry));
-      console.log('Telemetry saved as JSON');
+  .then((extracted) => {
+    goproTelemetry(extracted, {}, (telemetry) => {
+      fs.writeFileSync("output_path.json", JSON.stringify(telemetry));
+      console.log("Telemetry saved as JSON");
     });
   })
-  .catch(error => console.error(error));
+  .catch((error) => console.error(error));
 ```
 
 **timing** object structure:
@@ -186,7 +190,7 @@ GoPros split very long videos in multiple files. In order to generate a single m
 ```js
 const telemetry = goproTelemetry([
   { rawData: file1Data, timing: file1Timing },
-  { rawData: file2Data, timing: file2Timing }
+  { rawData: file2Data, timing: file2Timing },
 ]);
 ```
 

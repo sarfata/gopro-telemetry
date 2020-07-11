@@ -1,5 +1,5 @@
-const egm96 = require('egm96');
-const breathe = require('./utils/breathe');
+// const egm96 = require('egm96');
+const breathe = require("./utils/breathe");
 
 //Adapts WGS84 ellipsoid heights in GPS data to EGM96 geoid (closer to mean sea level) and filters out bad gps data
 module.exports = async function (
@@ -7,7 +7,7 @@ module.exports = async function (
   { ellipsoid, GPS5Precision, GPS5Fix, geoidHeight }
 ) {
   //Set conditions to filter out GPS5 by precision and type of fix
-  const approveStream = s => {
+  const approveStream = (s) => {
     if (GPS5Fix != null) {
       if (s.GPSF == null) return false;
       if (s.GPSF < GPS5Fix) return false;
@@ -37,7 +37,7 @@ module.exports = async function (
         else if (
           //If altitude is mean sea level, no need to process it further
           //Otherwise check if all needed info is available
-          d.STRM[i].GPSA !== 'MSLV' &&
+          d.STRM[i].GPSA !== "MSLV" &&
           (!ellipsoid || geoidHeight) &&
           d.STRM[i].GPSF != null &&
           d.STRM[i].GPSP != null &&
@@ -61,20 +61,20 @@ module.exports = async function (
                 : [1, 1];
             correction.source = [
               d.STRM[i].GPS5[0][0] / scaling[0],
-              d.STRM[i].GPS5[0][1] / scaling[1]
+              d.STRM[i].GPS5[0][1] / scaling[1],
             ];
           }
         }
       }
     }
-    if (correction.source)
-      correction.value = egm96(correction.source[0], correction.source[1]);
+    // if (correction.source)
+    // correction.value = egm96(correction.source[0], correction.source[1]);
   }
 
   if (correction.value != null) {
     //Loop streams to make the height adjustments
-    (result.DEVC || []).forEach(d => {
-      (d.STRM || []).forEach(s => {
+    (result.DEVC || []).forEach((d) => {
+      (d.STRM || []).forEach((s) => {
         //Find GPS data
         if (s.GPS5) {
           if (!ellipsoid) s.altitudeFix = correction.value;
